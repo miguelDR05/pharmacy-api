@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('created_at')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_at')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

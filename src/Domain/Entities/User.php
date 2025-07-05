@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Entities;
+namespace Domain\Entities;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,9 +13,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'phone',
-        'is_active',
+        'email_verified_at',
+        'role_id',
+        'active',
     ];
 
     protected $hidden = [
@@ -25,6 +25,6 @@ class User extends Authenticatable
 
     protected $casts = [
         'password' => 'hashed',
-        'is_active' => 'boolean',
+        'active' => 'boolean',
     ];
 }

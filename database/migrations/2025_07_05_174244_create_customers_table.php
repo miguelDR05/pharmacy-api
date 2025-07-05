@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->boolean('active')->default(true);
             $table->string('status', 20)->default('active');
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('created_at')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_at')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

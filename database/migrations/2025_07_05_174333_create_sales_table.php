@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('payment_method');
             $table->string('status', 20)->default('completed');
             $table->boolean('active')->default(true);
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('created_at')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_at')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }
