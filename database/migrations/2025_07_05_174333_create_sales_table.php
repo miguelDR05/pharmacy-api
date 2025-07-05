@@ -9,11 +9,15 @@ return new class extends Migration {
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('set null');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
             $table->decimal('total', 10, 2);
             $table->decimal('discount', 10, 2)->default(0);
             $table->string('payment_method');
+            $table->string('status', 20)->default('completed');
+            $table->boolean('active')->default(true);
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

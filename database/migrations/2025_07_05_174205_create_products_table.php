@@ -9,13 +9,17 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('barcode')->nullable();
             $table->decimal('price', 10, 2);
             $table->decimal('cost', 10, 2);
             $table->integer('stock')->default(0);
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->boolean('active')->default(true);
+            $table->string('status', 20)->default('available');
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

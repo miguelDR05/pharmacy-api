@@ -11,10 +11,11 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('description')->nullable();
+            $table->boolean('active')->default(true);
+            $table->string('status', 20)->default('active');
             $table->timestamps();
         });
     }
-
     public function down(): void
     {
         Schema::dropIfExists('roles');
