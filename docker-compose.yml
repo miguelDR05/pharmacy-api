@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pharmacy_api
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - "9000:9000"
+    networks:
+      - appnet
+    depends_on:
+      - db
+    command: "php-fpm"
+
+  db:
+    image: postgres:16
+    container_name: farmacia_db
+    environment:
+      POSTGRES_DB: farmacia
+      POSTGRES_USER: farmacia_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:alpine
+    container_name: farmacia_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - appnet
+
+volumes:
+  pgdata:
+
+networks:
+  appnet:
