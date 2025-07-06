@@ -11,11 +11,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->text('description')->nullable(); // Nuevo campo
             $table->string('barcode')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->decimal('cost', 10, 2);
-            $table->integer('stock')->default(0);
+            $table->decimal('price', 8, 2);
+            $table->decimal('purchase_price', 8, 2)->nullable(); // Nuevo campo
+            $table->integer('stock')->default(0); // Nuevo campo
+            $table->date('expiration_date')->nullable(); // Nuevo campo
             $table->boolean('active')->default(true);
             $table->string('status', 20)->default('available');
 

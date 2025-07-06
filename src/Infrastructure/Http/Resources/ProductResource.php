@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace Infrastructure\Http\Resources;
 
+use Domain\Entities\Product as ProductEntity;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource

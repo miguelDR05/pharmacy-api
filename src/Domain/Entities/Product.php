@@ -1,43 +1,34 @@
+php
 <?php
 
-namespace App\Domain\Entities;
+namespace Domain\Entities;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// No extender de Model ni usar SoftDeletes aquí
 
-class Product extends Model
+class Product
 {
-    use SoftDeletes;
+    public function __construct(
+        public ?int $id, // Puede ser null si es un producto nuevo
+        public string $name,
+        public ?string $barcode,
+        public float $price,
+        public int $category_id,
+        public ?string $description, // Agregado
+        public int $stock, // Agregado
+        public ?string $expiration_date, // O usar un objeto DateTime si prefieres
+        public ?float $purchase_price, // Agregado
+        public bool $active, // Agregado
+        public ?int $user_created,
+        public ?int $user_updated,
+        public ?string $created_at,
+        public ?string $updated_at,
+        // Considera agregar propiedades para relaciones si son cruciales en el dominio,
+        // pero sin acoplamiento a Eloquent (ej: un objeto Category en lugar de belongsTo)
+    ) {}
 
-    protected $fillable = [
-        'name',
-        'description',
-        'barcode',
-        'price',
-        'cost',
-        'stock',
-        'min_stock',
-        'category_id',
-        'is_active',
-        'requires_prescription',
-    ];
-
-    protected $casts = [
-        'price' => 'decimal:2',
-        'cost' => 'decimal:2',
-        'stock' => 'integer',
-        'min_stock' => 'integer',
-        'is_active' => 'boolean',
-        'requires_prescription' => 'boolean',
-    ];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function isLowStock(): bool
-    {
-        return $this->stock <= $this->min_stock;
-    }
+    // Métodos de negocio relevantes para la Entidad (ej: isLowStock si aplica aquí)
+     public function isLowStock(int $minStock): bool
+     {
+         return $this->stock <= $minStock;
+     }
 }

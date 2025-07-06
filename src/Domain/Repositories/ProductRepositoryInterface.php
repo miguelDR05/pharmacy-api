@@ -13,6 +13,6 @@ interface ProductRepositoryInterface
     public function getLowStock(): LengthAwarePaginator;
     public function create(array $data): Product;
     public function update(int $id, array $data): Product;
-    public function delete(int $id): bool;
+    public function delete(int $id, int $userId): bool;
     public function updateStock(int $id, int $quantity): bool;
 }
