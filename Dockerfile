@@ -19,15 +19,7 @@ COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# # Copiar composer.json primero para cachear vendor
-# COPY composer.json composer.lock* ./
-# RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# # Copiar código
-# COPY . .
-
-# RUN php artisan key:generate
-# RUN php artisan config:clear && php artisan route:clear
-
-# EXPOSE 9000
-# CMD ["php-fpm"]
+# Set folder permissions for Laravel
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache

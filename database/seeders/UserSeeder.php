@@ -11,23 +11,13 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Asegúrate que exista el rol
-        $adminRole = Role::firstOrCreate([
-            'name' => 'admin',
-            'guard_name' => 'sanctum',
-        ]);
-
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@farmacia.com'],
+        User::firstOrCreate(
             [
                 'name' => 'admin',
+                'email' => 'admin@farmacia.com',
                 'password' => Hash::make('admin123'),
-                'role_id' => $adminRole->id,
-                'created_at' => 1,
-                'updated_at' => 1,
+                'role_id' => 1
             ]
         );
-
-        $admin->assignRole('admin');
     }
 }

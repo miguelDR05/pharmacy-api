@@ -29,14 +29,19 @@
             "Domain\\": "src/Domain/",
             "Infrastructure\\": "src/Infrastructure/",
             "Interface\\": "src/Interface/",
+            "Shared\\": "src/Shared/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "bootstrap/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": ["src/Shared/Helpers/Response.php"]
     },
     "scripts": {
         "post-autoload-dump": [

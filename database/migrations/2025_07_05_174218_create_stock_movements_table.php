@@ -18,8 +18,13 @@ return new class extends Migration
             $table->integer('quantity');
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('created_at')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_at')->nullable()->constrained('users')->nullOnDelete();
+
+            $table->bigInteger('user_created')->unsigned()->index()->nullable();
+            $table->bigInteger('user_updated')->unsigned()->index()->nullable();
+
+            $table->foreign('user_created')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('user_updated')->references('id')->on('users')->onDelete('no action');
+
             $table->timestamps();
         });
     }

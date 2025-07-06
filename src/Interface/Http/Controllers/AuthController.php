@@ -2,16 +2,27 @@
 
 namespace Interface\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-
-use Application\UseCases\Auth\RegisterUser;
-use Illuminate\Http\Request;
+use Application\UseCases\Auth\LoginUser;
+use Interface\Http\Requests\LoginRequest;
+use Illuminate\Routing\Controller;
 
 class AuthController extends Controller
 {
-    public function register(Request $request, RegisterUser $registerUser)
+    public function login(LoginRequest $request, LoginUser $loginUser)
     {
-        $user = $registerUser->handle($request->all());
-        return response()->json(['message' => 'Usuario registrado', 'user' => $user], 201);
+        $result = $loginUser->execute($request->email, $request->password);
+
+        return responseApi(
+            code: 200,
+            title: "Bienvenido",
+            message: "Inicio de sesión exitoso",
+            data: $result
+        );
+    }
+
+    public function logout()
+    {
+        request()->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Sesión cerrada']);
     }
 }

@@ -18,8 +18,8 @@ class RegisterUser
             'password' => Hash::make($data['password']),
             'role_id' => $role->id,
             'active' => true,
-            'created_at' => 1,
-            'updated_at' => 1,
+            'user_created' => 1,
+            'user_updated' => 1,
         ]);
 
         $user->assignRole($role->name);
