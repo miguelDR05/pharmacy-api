@@ -2,7 +2,7 @@
 
 namespace Interface\Http\Controllers\Api;
 
-use Infrastructure\Http\Controllers\Controller; // Asegurarte de que esta ruta sigue siendo correcta para tu Controller base
+use Illuminate\Routing\Controller;
 use Infrastructure\Http\Requests\ProductRequest;
 use Application\UseCases\Product\CreateProduct;
 use Application\UseCases\Product\UpdateProduct;
@@ -12,10 +12,9 @@ use Application\UseCases\Product\DeleteProduct;
 // use Application\UseCases\Product\UpdateProductStock;
 
 use Infrastructure\Http\Resources\ProductResource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Domain\Exceptions\ProductNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 // Asegurarte de que la función responseApi está disponible globalmente o importarla si es necesario
 // use function App\Helpers\responseApi; // Ejemplo si estuviera en App\Helpers
@@ -34,7 +33,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): array
     {
         try {
             $filters = $request->all();
@@ -52,7 +51,7 @@ class ProductController extends Controller
             );
         } catch (\Exception $e) {
             // Manejo de errores
-             return responseApi(
+            return responseApi(
                 code: 500,
                 title: "Error",
                 message: "Error al obtener la lista de productos",
@@ -64,9 +63,9 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request): JsonResponse
+    public function store(ProductRequest $request): array
     {
-        $userId = auth()->id();
+        $userId = Auth::id();
         $data = $request->validated();
         $data['user_created'] = $userId;
         $data['user_updated'] = $userId;
@@ -84,7 +83,7 @@ class ProductController extends Controller
             );
         } catch (\Exception $e) {
             // Manejo de errores
-             return responseApi(
+            return responseApi(
                 code: 500,
                 title: "Error",
                 message: "Error al crear el producto",
@@ -96,14 +95,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id): array
     {
         try {
             $product = $this->getProductUseCase->execute($id);
 
             if (!$product) {
-                 // Si el caso de uso devuelve null si no encuentra
-                 return responseApi(
+                // Si el caso de uso devuelve null si no encuentra
+                return responseApi(
                     code: 404,
                     title: "Producto No Encontrado",
                     message: "El producto solicitado no existe."
@@ -117,7 +116,7 @@ class ProductController extends Controller
                 code: 200,
                 title: "Detalle del Producto",
                 message: "Producto obtenido exitosamente",
-                data: $formattedProduct->toArray($request)
+                data: $formattedProduct
             );
         }
         // Capturar excepciones de "no encontrado" para responder con 404
@@ -127,17 +126,15 @@ class ProductController extends Controller
                 title: "Producto No Encontrado",
                 message: "El producto solicitado no existe."
             );
-        }
-        catch (ProductNotFoundException $e) { // Si creaste esta excepción y la lanzas
-             return responseApi(
+        } catch (ModelNotFoundException $e) { // Si creaste esta excepción y la lanzas
+            return responseApi(
                 code: 404,
                 title: "Producto No Encontrado",
                 message: $e->getMessage() // Usar el mensaje de la excepción
             );
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Manejo de otros errores
-             return responseApi(
+            return responseApi(
                 code: 500,
                 title: "Error",
                 message: "Error al obtener el producto",
@@ -149,14 +146,14 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, int $id): JsonResponse
+    public function update(ProductRequest $request, int $id): array
     {
-        $userId = auth()->id();
+        $userId = Auth::id();
         $data = $request->validated();
         $data['user_updated'] = $userId;
 
         try {
-             $product = $this->updateProductUseCase->execute($id, $data);
+            $product = $this->updateProductUseCase->execute($id, $data);
             // Usar el Resource para formatear el dato antes de pasarlo a responseApi
             $formattedProduct = new ProductResource($product);
 
@@ -167,23 +164,21 @@ class ProductController extends Controller
                 data: $formattedProduct->toArray($request)
             );
         }
-         // Capturar excepciones de "no encontrado" para responder con 404
+        // Capturar excepciones de "no encontrado" para responder con 404
         catch (ModelNotFoundException $e) {
-             return responseApi(
+            return responseApi(
                 code: 404,
                 title: "Producto No Encontrado",
                 message: "El producto a actualizar no existe."
             );
-        }
-         catch (ProductNotFoundException $e) { // Si creaste esta excepción y la lanzas
-             return responseApi(
+        } catch (ModelNotFoundException $e) { // Si creaste esta excepción y la lanzas
+            return responseApi(
                 code: 404,
                 title: "Producto No Encontrado",
                 message: $e->getMessage()
             );
-         }
-        catch (\Exception $e) {
-             return responseApi(
+        } catch (\Exception $e) {
+            return responseApi(
                 code: 500,
                 title: "Error",
                 message: "Error al actualizar el producto",
@@ -195,9 +190,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage (logical delete).
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): array
     {
-        $userId = auth()->id();
+        $userId = Auth::id();
 
         try {
             // Pasar el ID del usuario al caso de uso para la eliminación lógica
@@ -224,22 +219,20 @@ class ProductController extends Controller
         }
         // Capturar excepciones de "no encontrado" para responder con 404
         catch (ModelNotFoundException $e) {
-             return responseApi(
+            return responseApi(
                 code: 404,
                 title: "Producto No Encontrado",
                 message: "El producto a desactivar no existe."
             );
-        }
-        catch (ProductNotFoundException $e) { // Si creaste esta excepción y la lanzas
-             return responseApi(
+        } catch (ModelNotFoundException $e) { // Si creaste esta excepción y la lanzas
+            return responseApi(
                 code: 404,
                 title: "Producto No Encontrado",
                 message: $e->getMessage()
             );
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // Manejo de otros errores
-             return responseApi(
+            return responseApi(
                 code: 500,
                 title: "Error",
                 message: "Error al desactivar el producto",

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Entities;
+namespace Domain\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +35,6 @@ class Sale extends Model
 
     public function items()
     {
-        return $this->hasMany(SaleItem::class);
+        return $this->hasMany(SaleProduct::class);
     }
 }

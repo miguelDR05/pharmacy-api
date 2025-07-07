@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Repositories;
+namespace Domain\Repositories;
 
-use App\Domain\Entities\Sale;
+use Domain\Entities\Sale;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface SaleRepositoryInterface

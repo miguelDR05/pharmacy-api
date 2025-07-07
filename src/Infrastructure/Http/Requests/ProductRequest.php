@@ -1,4 +1,3 @@
-php
 <?php
 
 namespace Infrastructure\Http\Requests; // Namespace actualizado
@@ -45,12 +44,12 @@ class ProductRequest extends FormRequest
             'price.required' => 'El precio de venta es obligatorio.',
             'price.numeric' => 'El precio de venta debe ser un número.',
             'price.min' => 'El precio de venta debe ser mayor o igual a 0.',
-             'purchase_price.numeric' => 'El precio de compra debe ser un número.',
+            'purchase_price.numeric' => 'El precio de compra debe ser un número.',
             'purchase_price.min' => 'El precio de compra debe ser mayor o igual a 0.',
             'stock.required' => 'El stock es obligatorio.',
             'stock.integer' => 'El stock debe ser un número entero.',
             'stock.min' => 'El stock no puede ser negativo.',
-             'min_stock.required' => 'El stock mínimo es obligatorio.',
+            'min_stock.required' => 'El stock mínimo es obligatorio.',
             'min_stock.integer' => 'El stock mínimo debe ser un número entero.',
             'min_stock.min' => 'El stock mínimo no puede ser negativo.',
             'category_id.required' => 'La categoría es obligatoria.',

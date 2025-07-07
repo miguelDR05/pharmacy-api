@@ -1,4 +1,3 @@
-php
 <?php
 
 namespace Domain\Entities;
@@ -15,6 +14,7 @@ class Product
         public int $category_id,
         public ?string $description, // Agregado
         public int $stock, // Agregado
+        public int $min_stock, // Agregado
         public ?string $expiration_date, // O usar un objeto DateTime si prefieres
         public ?float $purchase_price, // Agregado
         public bool $active, // Agregado
@@ -27,8 +27,8 @@ class Product
     ) {}
 
     // Métodos de negocio relevantes para la Entidad (ej: isLowStock si aplica aquí)
-     public function isLowStock(int $minStock): bool
-     {
-         return $this->stock <= $minStock;
-     }
+    public function isLowStock(int $minStock): bool
+    {
+        return $this->stock <= $minStock;
+    }
 }

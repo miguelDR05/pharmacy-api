@@ -1,4 +1,3 @@
-php
 <?php
 
 namespace Infrastructure\Persistence\Eloquent\Models;
@@ -55,6 +54,6 @@ class Product extends Model
      */
     public function sales(): HasMany
     {
-        return $this->hasMany(SaleProducts::class);
+        return $this->hasMany(SaleProduct::class);
     }
 }

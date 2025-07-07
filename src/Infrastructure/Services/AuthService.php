@@ -2,7 +2,9 @@
 
 namespace Infrastructure\Services;
 
-php
+use Domain\Services\AuthServiceInterface;
+use Infrastructure\Persistence\Eloquent\Models\User;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log; // Importar la fachada Log
@@ -10,9 +12,7 @@ use Illuminate\Http\Request; // Importar Request para obtener la IP
 
 class AuthService implements AuthServiceInterface
 {
-    public function __construct(private AuthServiceInterface $authService) {}
-
-    public function execute(string $email, string $password): array
+    public function login(string $email, string $password): array
     {
         $user = User::where('email', $email)->first();
         $request = request(); // Obtener la instancia de Request
@@ -28,7 +28,7 @@ class AuthService implements AuthServiceInterface
         }
 
         if (!$user->active) {
-             Log::warning('Intento de login fallido: Usuario inactivo', [
+            Log::warning('Intento de login fallido: Usuario inactivo', [
                 'email' => $email,
                 'ip' => $request->ip()
             ]);
@@ -45,4 +45,3 @@ class AuthService implements AuthServiceInterface
         ];
     }
 }
-

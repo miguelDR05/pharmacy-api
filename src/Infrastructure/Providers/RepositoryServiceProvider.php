@@ -3,17 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Domain\Repositories\ProductRepositoryInterface;
-use App\Infrastructure\Repositories\ProductRepository;
-use App\Domain\Repositories\SaleRepositoryInterface;
-use App\Infrastructure\Repositories\SaleRepository;
+use Domain\Repositories\ProductRepositoryInterface;
+use Infrastructure\Persistence\Eloquent\Repositories\EloquentProductRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(SaleRepositoryInterface::class, SaleRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, EloquentProductRepository::class);
     }
 
     public function boot(): void
